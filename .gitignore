@@ -1,6 +1,7 @@
 .idea/
 .vscode/
 .env/
+.DS_Store
 ormconfig.json
 node_modules/
 build/
