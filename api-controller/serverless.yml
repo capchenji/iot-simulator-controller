@@ -26,11 +26,11 @@ provider:
   region: ap-southeast-1
   deploymentBucket: iot-generator-controller-sls-deployment-bucket
   environment:
-    RDS_HOSTNAME: clp-dev-jimmy.mysql.rds.aliyuncs.com
-    RDS_USERNAME: iot_data_user
-    RDS_PASSWORD: Innovati0n
-    RDS_PORT: 3306
-    RDS_DB_NAME: iot_data
+    RDS_HOSTNAME: ${file(./config/${self:provider.stage}config.yml):env.RDS_HOSTNAME}
+    RDS_USERNAME: ${file(./config/${self:provider.stage}config.yml):env.RDS_USERNAME}
+    RDS_PASSWORD: ${file(./config/${self:provider.stage}config.yml):env.RDS_PASSWORD}
+    RDS_PORT: ${file(./config/${self:provider.stage}config.yml):env.RDS_PORT}
+    RDS_DB_NAME: ${file(./config/${self:provider.stage}config.yml):env.RDS_DB_NAME}
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -62,13 +62,21 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  control:
+    handler: services/handler.handler
     description: iot data generator controller
     events:
      - http:
-         path: /
-         method: get
+         path: /control
+         method: post
+  
+  getvalue:
+    handler: services/getvalue.handler
+    description: iot data generator get value
+    events:
+      - http:
+          path: /getdata
+          method: get
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

@@ -2,13 +2,21 @@
 var mysql = require('mysql');
 
 
-module.exports.hello = async (event) => {
+module.exports.handler= function (event, context, callback) {
+  
+  let body = JSON.parse(event.body)
+  // console.log(body)
+  // console.log(body.id)
+  // console.log(body.status)
+
+  // console.log(event.header)
   
   var connection = mysql.createConnection({
     host     : process.env.RDS_HOSTNAME,
     user     : process.env.RDS_USERNAME,
     password : process.env.RDS_PASSWORD,
-    port     : process.env.RDS_PORT
+    port     : process.env.RDS_PORT,
+    database : process.env.RDS_DB_NAME
   });
   
   connection.connect(function(err) {
@@ -16,17 +24,23 @@ module.exports.hello = async (event) => {
       console.error('Database connection failed: ' + err.stack);
       return;
     }
-  
+    
     console.log('Connected to database.');
+    var checktime = body.timestamp
+    var querysql = `SELECT * FROM iot WHERE Time=${checktime}`
+    console.log(querysql)
+    connection.query(querysql, function (err, result, fields) {
+      if (err) throw err;
+      console.log(result.Value);
+      let output = result.Value
+      connection.end();
+    });
   });
-  
-  connection.end();
   
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
+      message: output,
     }, null, 2),
   };
 
