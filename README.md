@@ -56,3 +56,7 @@ Go to body and use JSON format query like this:
 }
 ```
 Then you should be able to set device status to true for sensor id 1.
+
+I'm using Grafana to test whether data has changed. 
+You can use Grafana docker for your local machine:
+![DB schema](/images/grafana.png)
