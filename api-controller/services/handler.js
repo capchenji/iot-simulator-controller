@@ -5,11 +5,11 @@ var mysql = require('mysql');
 module.exports.handler= function (event, context, callback) {
   
   let body = JSON.parse(event.body)
-  // console.log(body)
-  // console.log(body.id)
-  // console.log(body.status)
-
-  // console.log(event.header)
+  
+  //######################
+  //CAUTION: 
+  //NEED TO ADD AUTHENTICATION METHOD HERE
+  //######################
   
   var connection = mysql.createConnection({
     host     : process.env.RDS_HOSTNAME,
