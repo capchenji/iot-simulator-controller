@@ -51,10 +51,12 @@ Go to postman and paste API returned from serverless framework.
 Go to body and use JSON format query like this:
 ```
 {
-    "id":1,
-    "status": true
+	"id":1,
+	"status": true,
+	"auth": xx
 }
 ```
+In the sample code, there is one simple auth process. If `auth` is not equal to 1024, it will return 401, please set `auth` to 1024 for normal operation.
 Then you should be able to set device status to true for sensor id 1.
 
 I'm using Grafana to test whether data has changed. 

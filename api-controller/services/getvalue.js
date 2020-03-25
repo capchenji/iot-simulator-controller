@@ -8,8 +8,18 @@ module.exports.handler= function (event, context, callback) {
   
   //######################
   //CAUTION: 
-  //NEED TO ADD AUTHENTICATION METHOD HERE
+  //NEED TO ADD REAL AUTHENTICATION METHOD HERE
   //######################
+
+  if (body.auth!=1024){
+    callback(null, {
+      statusCode: '401',
+      body: "Auth failed",
+      headers: {
+          "Access-Control-Allow-Origin": "*"
+      }
+    });
+  }
   
   var connection = mysql.createConnection({
     host     : process.env.RDS_HOSTNAME,
@@ -37,12 +47,13 @@ module.exports.handler= function (event, context, callback) {
     });
   });
   
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: output,
-    }, null, 2),
-  };
+  callback(null, {
+    statusCode: '200',
+    body: "value is XXX",
+    headers: {
+        "Access-Control-Allow-Origin": "*"
+    }
+  });
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration
   // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
